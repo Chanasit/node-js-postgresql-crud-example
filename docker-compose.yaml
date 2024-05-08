@@ -40,12 +40,15 @@ services:
     networks:
       - private_network
     volumes:
-      - ./db-data/:/var/lib/postgresql/data/
+      - db-data:/var/lib/postgresql/data/
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
       - POSTGRES_DB=testdb
+
+volumes:
+  db-data:
 
 networks:
   public_network:
