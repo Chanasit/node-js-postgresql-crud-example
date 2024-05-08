@@ -1,0 +1,55 @@
+version: '3'
+
+################################################################################
+# SERVICES
+################################################################################
+services:
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - nodejs
+    networks:
+      - public_network
+      - private_network
+
+  nodejs:
+    container_name: nodejs
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    networks:
+      - private_network
+    depends_on:
+      - database
+    ports:
+      - 3000:3000
+
+  database:
+    container_name: database
+    image: 'postgres:latest'
+    ports:
+      - 15432:5432
+    networks:
+      - private_network
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=testdb
+
+networks:
+  public_network:
+    driver: bridge
+  private_network:
+    driver: bridge
+    internal: true

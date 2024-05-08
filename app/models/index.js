@@ -6,10 +6,10 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   dialect: dbConfig.dialect,
 
   pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle
+    max: dbConfig.pool_max,
+    min: dbConfig.pool_min,
+    acquire: dbConfig.pool_acquire,
+    idle: dbConfig.pool_idle
   }
 });
 

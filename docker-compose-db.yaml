@@ -1,0 +1,19 @@
+version: '3'
+
+################################################################################
+# SERVICES
+################################################################################
+services:
+
+  database:
+    container_name: database
+    image: 'postgres:latest'
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=testdb
