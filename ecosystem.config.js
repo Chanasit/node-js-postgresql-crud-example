@@ -18,7 +18,7 @@ module.exports = {
     env_production: {
       NODE_ENV: "production",
       PORT: 3000,
-      HOST: "database",
+      HOST: "postgres",
       USER: "postgres",
       PASSWORD: "123",
       DB: "testdb",

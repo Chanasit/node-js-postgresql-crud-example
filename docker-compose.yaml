@@ -28,12 +28,12 @@ services:
     networks:
       - private_network
     depends_on:
-      - database
+      - postgres
     ports:
       - 3000:3000
 
-  database:
-    container_name: database
+  postgres:
+    container_name: postgres
     image: 'postgres:latest'
     ports:
       - 15432:5432
