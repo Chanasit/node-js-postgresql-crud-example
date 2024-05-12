@@ -28,10 +28,15 @@ db.sequelize.sync()
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log("Drop and re-sync db.");
 // });
+//
 
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
+});
+
+app.get("/healthz", (req, res) => {
+  res.json({ message: "status 200." });
 });
 
 require("./app/routes/turorial.routes")(app);
