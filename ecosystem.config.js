@@ -4,7 +4,7 @@ module.exports = {
     script: "./server.js",
     env: {
       NODE_ENV: "development",
-      PORT: 3000,
+      PORT: 4000,
       HOST: "localhost",
       USER: "postgres",
       PASSWORD: "123",
