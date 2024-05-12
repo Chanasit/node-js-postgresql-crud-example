@@ -8,10 +8,7 @@ pipeline {
     }
 
     stages {
-        stage('Build Development') {
-            when {
-                branch 'develop' // Only execute this stage for the 'develop' branch
-            }
+        stage('Build') {
             steps {
                 script {
                     // Get some code from a GitHub repository
@@ -19,33 +16,17 @@ pipeline {
                     sh "echo 'develop building ....'"
                     withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                        sh "echo ${env.GIT_BRANCH}"
 
-                        // Build Docker image
-                        sh "docker build -t ${DOCKER_IMAGE}-${env.BUILD_NUMBER} ."
+                        if (env.GIT_BRANCH == "origin/develop") {
+                          sh "docker build -t ${DOCKER_IMAGE}-${env.BUILD_NUMBER} ."
+                          sh "docker push ${DOCKER_IMAGE}-${env.BUILD_NUMBER}"
+                        }
 
-                        // Push Docker image
-                        sh "docker push ${DOCKER_IMAGE}-${env.BUILD_NUMBER}"
-                    }
-                }
-            }
-        }
-        stage('Build Production') {
-            when {
-                branch 'master' // Only execute this stage for the 'master' branch
-            }
-            steps {
-                script {
-                    // Get some code from a GitHub repository
-                    git 'https://github.com/Chanasit/node-js-postgresql-crud-example'
-                    sh "echo 'production building ....'"
-                    withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-
-                        // Build Docker image
-                        sh "docker build -t ${DOCKER_IMAGE} ."
-
-                        // Push Docker image
-                        sh "docker push ${DOCKER_IMAGE}"
+                        if (env.GIT_BRANCH == "origin/master") {
+                          sh "docker build -t ${DOCKER_IMAGE} ."
+                          sh "docker push ${DOCKER_IMAGE}"
+                        }
                     }
                 }
             }
