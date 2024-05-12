@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_REGISTRY_URL = 'https://index.docker.io' // Replace with your Docker registry URL
         DOCKER_REGISTRY_CREDENTIALS_ID = 'docker-hub-credential' // Replace with your Jenkins credentials ID
-        DOCKER_IMAGE = "3141hjkl/node-js-postgresql-crud-example:1.0.4"
+        DOCKER_IMAGE = "3141hjkl/node-js-postgresql-crud-example:1.0.5"
     }
 
     stages {
