@@ -16,7 +16,7 @@ pipeline {
                     sh "echo 'develop building ....'"
                     withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-                        sh "echo ${env.BRANCH_NAME}"
+                        sh "echo ${env.GIT_BRANCH}"
 
                         if (env.BRANCH_NAME == "develop") {
                           sh "docker build -t ${DOCKER_IMAGE}-${env.BUILD_NUMBER} ."
