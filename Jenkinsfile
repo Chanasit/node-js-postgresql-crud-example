@@ -18,12 +18,12 @@ pipeline {
                         sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
                         sh "echo ${env.GIT_BRANCH}"
 
-                        if (env.BRANCH_NAME == "develop") {
+                        if (env.BRANCH_NAME == "origin/develop") {
                           sh "docker build -t ${DOCKER_IMAGE}-${env.BUILD_NUMBER} ."
                           sh "docker push ${DOCKER_IMAGE}-${env.BUILD_NUMBER}"
                         }
 
-                        if (env.BRANCH_NAME == "master") {
+                        if (env.BRANCH_NAME == "origin/develop") {
                           sh "docker build -t ${DOCKER_IMAGE} ."
                           sh "docker push ${DOCKER_IMAGE}"
                         }
