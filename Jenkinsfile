@@ -2,51 +2,37 @@ pipeline {
     agent any
 
     environment {
-        NODE_VERSION = '14'
-        NPM_VERSION = 'latest'
+        DOCKER_REGISTRY_URL = 'https://index.docker.io' // Replace with your Docker registry URL
+        DOCKER_REGISTRY_CREDENTIALS_ID = 'docker-hub-credential' // Replace with your Jenkins credentials ID
+        DOCKER_IMAGE = "3141hjkl/node-js-postgresql-crud-example:1.0.3"
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh "echo installing"
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh "echo testing"
-            }
-        }
 
         stage('Build') {
             steps {
-                // Add build steps if applicable
-            }
-        }
+                script {
+                    // Get some code from a GitHub repository
+                    git 'https://github.com/Chanasit/node-js-postgresql-crud-example'
+                    withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
 
-        stage('Deploy') {
-            steps {
-                // Add deployment steps if applicable
+                        // Build Docker image
+                        sh "docker build -t ${DOCKER_IMAGE}-${env.BUILD_NUMBER} ."
+
+                        // Push Docker image
+                        sh "docker push ${DOCKER_IMAGE}-${env.BUILD_NUMBER}"
+                    }
+                }
             }
         }
     }
-
     post {
-        always {
-            echo 'Pipeline completed.'
-        }
         success {
-            echo 'Pipeline succeeded.'
+            echo 'Docker image built and pushed successfully!'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Failed to build or push Docker image.'
         }
     }
 }
