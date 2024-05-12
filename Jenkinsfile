@@ -23,7 +23,7 @@ pipeline {
                           sh "docker push ${DOCKER_IMAGE}-${env.BUILD_NUMBER}"
                         }
 
-                        if (env.GIT_BRANCH == "origin/develop") {
+                        if (env.GIT_BRANCH == "origin/master") {
                           sh "docker build -t ${DOCKER_IMAGE} ."
                           sh "docker push ${DOCKER_IMAGE}"
                         }
