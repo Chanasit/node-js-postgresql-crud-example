@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Build Development') {
             when {
-                branch 'develop' // Only execute this stage for the 'develop' branch
+                branch '*/develop' // Only execute this stage for the 'develop' branch
             }
             steps {
                 script {
@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Build Production') {
             when {
-                branch 'master' // Only execute this stage for the 'master' branch
+                branch '*/master' // Only execute this stage for the 'master' branch
             }
             steps {
                 script {
