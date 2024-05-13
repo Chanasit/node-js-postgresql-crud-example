@@ -30,13 +30,14 @@ services:
     depends_on:
       - postgres
     ports:
-      - 3000:3000
+      - "3000:4000"
+    command: [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "development"]
 
   postgres:
     container_name: postgres
     image: 'postgres:latest'
     ports:
-      - 15432:5432
+      - "15432:5432"
     networks:
       - private_network
     volumes:
